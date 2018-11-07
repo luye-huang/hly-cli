@@ -1,6 +1,7 @@
 #! node
-var fs = require('fs');
-var path = require('path');
+const fs = require('fs');
+const path = require('path');
+const program = require('commander');
 
 var config = {};
 process.argv.slice(2).forEach(function (item) {
@@ -103,7 +104,7 @@ if (process.argv.length == 2) {
 
 copyTemplate("package.json", PATH + '/package.json');
 console.log('PATH', PATH);
-copyFolder(PATH + '/templates', PATH +'/shit');
+copyFolder(PATH + '/templates', PATH +'/dist');
 
 
 // mkdir(PATH + '/public', function () {

@@ -1,5 +1,11 @@
 {
   "scripts": {
     "sass": "sass --watch src/scss/main.scss:public/css/main.css"
+  },
+  "bin": {
+    "hly-cli": "bin/index.js"
+  },
+  "dependencies": {
+    "commander": "^2.19.0"
   }
 }
