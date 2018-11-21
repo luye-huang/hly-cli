@@ -1,3 +1,7 @@
-.idea/
-
-dist/
+.DS_Store
+.vscode/
+node_modules/
+.idea
+catch_modules/
+/bin
+.npm-debug.log
