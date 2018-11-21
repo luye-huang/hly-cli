@@ -12,8 +12,8 @@ initCommands(program);
 
 program.parse(process.argv);
 
-if(program.args.length<1){
-  console.log(`
+if (program.args.length < 1) {
+    console.log(`
        _____________________________________________
       //:::::::::::::::::::::::::::::::::::::::::::::\\
     //:::_______:::::::::________::::::::::_____:::::::\\
@@ -38,6 +38,6 @@ if(program.args.length<1){
                             \\_//
                               "
   `);
-  console.log('Welcome!');
-  console.log(program.helpInformation());
+    console.log('Welcome!');
+    console.log(program.helpInformation());
 }
