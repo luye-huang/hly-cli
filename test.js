@@ -3,37 +3,49 @@
  */
 var program = require('commander');
 
-function range(val) {
-    return val.split('..').map(Number);
-}
+import inquirer from 'inquirer';
+import Rx from 'rx';
+import {config, getPromptConfig} from './src/commands/init/configPrompt';
 
-function list(val) {
-    return val.split(',');
-}
+const prompts = new Rx.Subject();
+inquirer.prompt(prompts)
+    .then((answers) => {
+        console.log('done', JSON.stringify(answers, null, '  '));
+    });
+// 询问项目名
+prompts.onNext(getPromptConfig('init'));
+prompts.onNext(getPromptConfig('tool'));
+prompts.onNext(getPromptConfig('component'));
+prompts.onCompleted();
 
-// program
-//     .version('0.0.1')
-//     .usage('test')
-//     .option('-m, --max ', '最大连接数', parseInt)
-//     .option('-s, --seed ', '出始种子', parseFloat)
-//     .option('-r,--range <a>..<b>', '阈值区间', range)
-//     .option('-l, --list ', 'IP列表', list)
+
+// const prompts = new Rx.Subject();
 //
-// program
-//     .command('deploy ')
-//     .description('部署一个服务节点')
-//     .action(function(name, nnn){
-//         console.log('Deploying "%s" "%s"', name, nnn);
-//     });
-function trans(val) {
-    return val + 1;
-}
-program.option('-k, --kb <n>', 'hb', trans).parse(process.argv);
-console.log(' int: %i', program.kb);
+// function makePrompt(msg) {
+//     return {
+//         type: 'input',
+//         name: `userInput-${i}`,
+//         message: `${msg || 'Say something to start chatting!'}\n\n`,
+//     };
+// }
 
-program.parse(process.argv);
-// console.log(' max: %j', program.max);
-// console.log(' seed: %j', program.seed);
-// program.range = program.range || [];
-// console.log(' range: %j..%j', program.range[0], program.range[1]);
-// console.log(' list: %j', program.list);
+// let i = 0;
+// // '{answer}' only returns answer with name of previous prompt
+// inquirer.prompt(prompts).ui.process.subscribe((answer) => {
+//     console.log(answer);
+//     prompts.onNext(getPromptConfig(`name䬨answer`));
+//     // if (answer !== '') {
+//     //     i += 1;
+//     //     prompts.onNext(makePrompt(`This is prompt #${i}.`));
+//     // } else {
+//     //     console.log('suc');
+//     //     prompts.onCompleted();
+//     // }
+// }, (err) => {
+//     console.warn(err);
+// }, () => {
+//     console.log('Interactive session is complete. Good bye! 👋\n');
+// });
+//
+// prompts.onNext(getPromptConfig('init'));
+

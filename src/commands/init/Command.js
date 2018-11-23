@@ -38,6 +38,29 @@ export default class Command {
     }
 
     /**
+     * 创建文件夹
+     */
+    createDir(project) {
+        const projectName = project.name;
+        console.log('   Create folder %s', project.name);
+        return new Promise((resolve, reject) => {
+            const child = exec(`mkdir ${projectName}`,
+                (error, stdout, stderr) => {
+                    if (error != null) {
+                        reject(error);
+                    }
+                    const sourceDir = path.resolve('.', `./${projectName}`);
+                    resolve({
+                        projectName,
+                        sourceDir,
+                        templatePath: GENERATOR_PATH_PREFIX
+                    });
+                }
+            );
+        });
+    }
+
+    /**
      * 安装依赖
      */
     installPackage(targetDirectory) {
@@ -58,27 +81,5 @@ export default class Command {
         });
     }
 
-    /**
-     * 创建文件夹
-     */
-    createDir(project) {
-        const projectName = project.name;
-        console.log('   Create folder %s', project.name);
 
-        return new Promise((resolve, reject) => {
-            const child = exec(`mkdir ${projectName}`,
-                (error, stdout, stderr) => {
-                    if (error != null) {
-                        reject(error);
-                    }
-                    const sourceDir = path.resolve('.', `./${projectName}`);
-                    resolve({
-                        projectName,
-                        sourceDir,
-                        templatePath: GENERATOR_PATH_PREFIX
-                    });
-                }
-            );
-        });
-    }
 }

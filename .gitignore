@@ -5,3 +5,4 @@ node_modules/
 catch_modules/
 /bin
 .npm-debug.log
+test.js
