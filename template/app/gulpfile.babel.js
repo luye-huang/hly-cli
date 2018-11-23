@@ -22,7 +22,7 @@ gulp.task('component', () => {
     const parent = yargs.argv.parent || '';
     const destComponentsPath = path.join(resolveToComponents(), parent);
 
-    let gulpComponents = gulp.src(path.join(__dirname, '../template/component', '*.**'))
+    let gulpComponents = gulp.src(path.join(__dirname, '../template', '*.**'))
         .pipe(template({
             name: name,
             upCaseName: cap(name),

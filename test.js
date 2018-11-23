@@ -6,16 +6,18 @@ var program = require('commander');
 import inquirer from 'inquirer';
 import Rx from 'rx';
 import {config, getPromptConfig} from './src/commands/init/configPrompt';
+import Command from './src/commands/init/Command';
 
 const prompts = new Rx.Subject();
 inquirer.prompt(prompts)
     .then((answers) => {
         console.log('done', JSON.stringify(answers, null, '  '));
+        new Command().process(answers);
     });
 // 询问项目名
 prompts.onNext(getPromptConfig('init'));
 prompts.onNext(getPromptConfig('tool'));
-prompts.onNext(getPromptConfig('component'));
+// prompts.onNext(getPromptConfig('common'));
 prompts.onCompleted();
 
 

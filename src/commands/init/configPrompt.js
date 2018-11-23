@@ -15,9 +15,9 @@ export const config = {
         choices: ['不需要', 'Angular', 'React', 'Vue'],
         default: 0,
     },
-    component: {
-        name: 'component',
-        type: 'list',
+    common: {
+        name: 'common',
+        type: 'checkbox',
         message: '请选择跨平台组件(可兼容任意框架,传参方式及功能介绍见生成组件顶部)',
         choices: ['不需要', 'table', 'tree'],
         default: 0,
