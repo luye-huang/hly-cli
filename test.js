@@ -17,7 +17,7 @@ inquirer.prompt(prompts)
 // 询问项目名
 prompts.onNext(getPromptConfig('init'));
 prompts.onNext(getPromptConfig('tool'));
-// prompts.onNext(getPromptConfig('common'));
+prompts.onNext(getPromptConfig('common'));
 prompts.onCompleted();
 
 

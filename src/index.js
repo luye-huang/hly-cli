@@ -3,7 +3,6 @@
 import {version} from '../package.json';
 import program from 'commander';
 import initCommands from './commands/init';
-//import startCommands from './commands/start';
 
 program.version(version);
 

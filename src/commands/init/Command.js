@@ -37,37 +37,55 @@ export default class Command {
      */
     generateDir(dirName, subDir, values = 'true') {
         console.log(values);
-        if (values == '不需要' || values.trim() == '' || (values.constructor == Array && values[0] == '不需要')) {
+        if (values == '不需要' || (values.constructor == Array && values[0] == '不需要')) {
             return Promise.resolve();
         }
         console.log('Create folder %s', dirName);
         return new Promise((resolve, reject) => {
             if (subDir == 'common') {
                 values.forEach(value => {
-
+                    const child = exec(`mkdir -p ${dirName}/${value}`,
+                        (error, stdout, stderr) => {
+                            if (error != null) {
+                                reject(error);
+                            }
+                            let sourceDir = path.resolve('.', `./${dirName}/${value}`);
+                            console.log(sourceDir);
+                            console.log(GENERATOR_PATH_PREFIX + subDir);
+                            vfs.src('**/*', {cwd: `${GENERATOR_PATH_PREFIX}/${subDir}/${value}`, dot: true})
+                                .pipe(vfs.dest(sourceDir))
+                                .on('end', () => {
+                                    resolve();
+                                })
+                                .on('error', err => {
+                                    reject(err);
+                                })
+                                .resume();
+                        }
+                    );
                 });
             } else {
-
-            }
-            const child = exec(`mkdir -p ${dirName}`,
-                (error, stdout, stderr) => {
-                    if (error != null) {
-                        reject(error);
+                const child = exec(`mkdir -p ${dirName}`,
+                    (error, stdout, stderr) => {
+                        if (error != null) {
+                            reject(error);
+                        }
+                        let sourceDir = path.resolve('.', `./${dirName}`);
+                        console.log(sourceDir);
+                        console.log(GENERATOR_PATH_PREFIX + subDir);
+                        vfs.src('**/*', {cwd: GENERATOR_PATH_PREFIX + subDir, dot: true})
+                            .pipe(vfs.dest(sourceDir))
+                            .on('end', () => {
+                                resolve();
+                            })
+                            .on('error', err => {
+                                reject(err);
+                            })
+                            .resume();
                     }
-                    let sourceDir = path.resolve('.', `./${dirName}`);
-                    console.log(sourceDir);
-                    console.log(GENERATOR_PATH_PREFIX + subDir);
-                    vfs.src('**/*', {cwd: GENERATOR_PATH_PREFIX + subDir, dot: true})
-                        .pipe(vfs.dest(sourceDir))
-                        .on('end', () => {
-                            resolve();
-                        })
-                        .on('error', err => {
-                            reject(err);
-                        })
-                        .resume();
-                }
-            );
+                );
+            }
+
         });
     }
 

@@ -1,6 +1,7 @@
 import inquirer from 'inquirer';
 import Rx from 'rx';
 import Command from './Command';
+import {getPromptConfig} from './configPrompt';
 
 /**
  * 问讯项目名
@@ -11,17 +12,9 @@ function askInit() {
         .then((answers) => {
             new Command().process(answers);
         });
-    // 询问项目名
-    prompts.onNext({
-        name: 'name',
-        message: 'Input your project name',
-        validate: function (input) {
-            if (!input && input.trim() === '') {
-                return ('you need to provide project name');
-            }
-            return true;
-        }
-    });
+    prompts.onNext(getPromptConfig('init'));
+    prompts.onNext(getPromptConfig('tool'));
+    prompts.onNext(getPromptConfig('common'));
     // When you're done
     prompts.onCompleted();
 }
