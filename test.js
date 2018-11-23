@@ -20,7 +20,7 @@ prompts.onNext(getPromptConfig('tool'));
 prompts.onNext(getPromptConfig('common'));
 prompts.onCompleted();
 
-
+// 无限cli 弹窗
 // const prompts = new Rx.Subject();
 //
 // function makePrompt(msg) {

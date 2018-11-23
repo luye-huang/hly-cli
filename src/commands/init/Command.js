@@ -1,6 +1,7 @@
 import colors from 'colors/safe';
 import path from 'path';
 import vfs from 'vinyl-fs';
+var fs = require("fs")
 import {exec, spawn, spawnSync} from 'child_process';
 
 const GENERATOR_PATH_PREFIX = path.join(__dirname, '../../../template');
@@ -10,8 +11,8 @@ export default class Command {
         console.log(colors.yellow(`Start to create project: ${project.projectName}`));
         this.generateDir(project.projectName, '/app')
             .then(this.generateDir(`${project.projectName}/tool`, `/tool/${project.tool}`, project.tool))
-            .then(this.generateDir(`${project.projectName}/common`, 'common', project.common))
-            // .then(this.installPackage(project.projectName))
+            // .then(this.generateDir(`${project.projectName}/common`, 'common', project.common))
+            .then(this.installPackage(project.projectName))
             .catch(error => {
                 console.log('');
                 console.error(colors.red(error.message));
@@ -36,7 +37,6 @@ export default class Command {
      * 创建文件夹及文件
      */
     generateDir(dirName, subDir, values = 'true') {
-        console.log(values);
         if (values == '不需要' || (values.constructor == Array && values[0] == '不需要')) {
             return Promise.resolve();
         }
@@ -76,6 +76,7 @@ export default class Command {
                         vfs.src('**/*', {cwd: GENERATOR_PATH_PREFIX + subDir, dot: true})
                             .pipe(vfs.dest(sourceDir))
                             .on('end', () => {
+                                console.log(99999);
                                 resolve();
                             })
                             .on('error', err => {
@@ -135,11 +136,18 @@ export default class Command {
      */
     installPackage(dir) {
         const targetDirectory = path.resolve('.', `./${dir}`);
-        console.log(colors.yellow('Installing begin: npm install -d'));
+        console.log('targetDirectory', targetDirectory);
+        // console.log(fs.stat(targetDirectory));
+        // fs.stat('/Users/luye/b', function(err, stats){
+        //     console.log(stats);
+        // });
+        fs.stat(targetDirectory, function(err, stats){
+            console.log('stats', stats);
+        });
+        console.log(colors.yellow('Installing begin: sudo npm install -d'));
         return new Promise((resolve, reject) => {
             const child = spawn(process.platform === "win32" ? "npm.cmd" : "npm", ['install'], {
                 cwd: targetDirectory,
-                stdio: "inherit"
             });
             child.on('close', () => {
                 console.log(colors.green('install complete'));
@@ -151,6 +159,4 @@ export default class Command {
             });
         });
     }
-
-
 }
