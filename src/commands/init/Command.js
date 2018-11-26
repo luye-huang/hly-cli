@@ -10,11 +10,10 @@ export default class Command {
     process(project) {
         console.log(colors.yellow(`Start to create project: ${project.projectName}`));
         this.generateDir(project.projectName, '/app')
-            .then(this.generateDir(`${project.projectName}/tool`, `/tool/${project.tool}`, project.tool))
-            // .then(this.generateDir(`${project.projectName}/common`, 'common', project.common))
-            .then(this.installPackage(project.projectName))
+            .then(() => this.generateDir(`${project.projectName}/tool`, `/tool/${project.tool}`, project.tool))
+            .then(() => this.generateDir(`${project.projectName}/common`, 'common', project.common))
+            .then(() => this.installPackage(project.projectName))
             .catch(error => {
-                console.log('');
                 console.error(colors.red(error.message));
                 process.exit(1);
             });
@@ -50,12 +49,10 @@ export default class Command {
                                 reject(error);
                             }
                             let sourceDir = path.resolve('.', `./${dirName}/${value}`);
-                            console.log(sourceDir);
-                            console.log(GENERATOR_PATH_PREFIX + subDir);
                             vfs.src('**/*', {cwd: `${GENERATOR_PATH_PREFIX}/${subDir}/${value}`, dot: true})
                                 .pipe(vfs.dest(sourceDir))
                                 .on('end', () => {
-                                    resolve();
+
                                 })
                                 .on('error', err => {
                                     reject(err);
@@ -64,6 +61,7 @@ export default class Command {
                         }
                     );
                 });
+                resolve();
             } else {
                 const child = exec(`mkdir -p ${dirName}`,
                     (error, stdout, stderr) => {
@@ -86,7 +84,6 @@ export default class Command {
                     }
                 );
             }
-
         });
     }
 
@@ -136,12 +133,7 @@ export default class Command {
      */
     installPackage(dir) {
         const targetDirectory = path.resolve('.', `./${dir}`);
-        console.log('targetDirectory', targetDirectory);
-        // console.log(fs.stat(targetDirectory));
-        // fs.stat('/Users/luye/b', function(err, stats){
-        //     console.log(stats);
-        // });
-        fs.stat(targetDirectory, function(err, stats){
+        fs.stat(targetDirectory, function (err, stats) {
             console.log('stats', stats);
         });
         console.log(colors.yellow('Installing begin: sudo npm install -d'));

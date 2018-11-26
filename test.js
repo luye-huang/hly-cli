@@ -19,7 +19,7 @@ prompts.onNext(getPromptConfig('init'));
 prompts.onNext(getPromptConfig('tool'));
 prompts.onNext(getPromptConfig('common'));
 prompts.onCompleted();
-
+// new Command().process({projectName: 111, tool: 'Vue', common: ['table', 'button']});
 // 无限cli 弹窗
 // const prompts = new Rx.Subject();
 //

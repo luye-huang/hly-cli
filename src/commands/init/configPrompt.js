@@ -2,7 +2,6 @@
  * Created by luye on 23/11/2018.
  */
 export const config = {
-    projectName: 'hh',
     init: {
         name: 'projectName',
         message: '请输入你的项目名称',
@@ -27,6 +26,8 @@ export const config = {
 export function getPromptConfig(key){
     return config[key];
 }
+
+export const seqPrompts = ['confirmProject', 'project', 'confirmTool', 'tool', 'confirmCommon', 'common'];
 
 function isEmpty(input) {
     if (!input && input.trim() === '') {
