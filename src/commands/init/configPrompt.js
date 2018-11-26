@@ -2,6 +2,11 @@
  * Created by luye on 23/11/2018.
  */
 export const config = {
+    confirmProject:{
+        name: 'confirmProject',
+        type: 'confirm',
+        message: '是否需要初始化项目?'
+    },
     confirmTool:{
         name: 'confirmTool',
         type: 'confirm',
@@ -38,7 +43,7 @@ export function getPromptConfig(key){
     return config[key];
 }
 
-export const seqPrompts = ['projectName', 'confirmTool', 'tool', 'confirmCommon', 'common', 'confirmProject'];
+export const seqPrompts = ['confirmProject', 'projectName', 'confirmTool', 'tool', 'confirmCommon', 'common'];
 
 function isEmpty(input) {
     if (!input && input.trim() === '') {

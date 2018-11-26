@@ -2,7 +2,7 @@ import inquirer from 'inquirer';
 import Rx from 'rx';
 import Command from './Command';
 import {getPromptConfig, seqPrompts} from './configPrompt';
-const MAX_STEP = 4;
+const MAX_STEP = seqPrompts.length - 1;
 
 /**
  * 问讯项目名

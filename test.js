@@ -5,7 +5,7 @@ var program = require('commander');
 import inquirer from 'inquirer';
 import Rx from 'rx';
 import {getPromptConfig, seqPrompts} from './src/commands/init/configPrompt';
-const MAX_STEP = 4;
+const MAX_STEP = seqPrompts.length - 1;
 import Command from './src/commands/init/Command';
 
 const prompts = new Rx.Subject();

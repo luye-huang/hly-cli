@@ -1,13 +1,15 @@
 import colors from 'colors/safe';
 import path from 'path';
 import vfs from 'vinyl-fs';
-var fs = require("fs")
+var fs = require("fs");
 import {exec, spawn, spawnSync} from 'child_process';
 
+const GERNERATING_FOLDER = 'cli-files';
 const GENERATOR_PATH_PREFIX = path.join(__dirname, '../../../template');
 
 export default class Command {
     process(project) {
+        project.projectName = project.projectName ? project.projectName : GERNERATING_FOLDER;
         console.log(colors.yellow(`Start to create project: ${project.projectName}`));
         this.generateDir(project.projectName, '/app')
             .then(() => project.tool && this.generateDir(`${project.projectName}/tool`, `/tool/${project.tool}`, project.tool))
@@ -23,8 +25,9 @@ export default class Command {
      * 创建文件夹及文件
      */
     generateDir(dirName, subDir, values = 'true') {
-        if (dirName == undefined) {
-            return Promise.resolve();
+        if (dirName == GERNERATING_FOLDER) {
+            return this.createDir(dirName);
+            // return Promise.resolve();
         }
         console.log('Create folder %s', dirName);
         return new Promise((resolve, reject) => {
@@ -94,21 +97,14 @@ export default class Command {
     /**
      * 创建文件夹
      */
-    createDir(project) {
-        const projectName = project.name;
-        console.log('   Create folder %s', project.name);
+    createDir(projectName) {
         return new Promise((resolve, reject) => {
             const child = exec(`mkdir ${projectName}`,
                 (error, stdout, stderr) => {
                     if (error != null) {
                         reject(error);
                     }
-                    const sourceDir = path.resolve('.', `./${projectName}`);
-                    resolve({
-                        projectName,
-                        sourceDir,
-                        templatePath: GENERATOR_PATH_PREFIX
-                    });
+                    resolve();
                 }
             );
         });
@@ -118,6 +114,9 @@ export default class Command {
      * 安装依赖
      */
     installPackage(dir) {
+        if(dir == GERNERATING_FOLDER){
+            return Promise.resolve();
+        }
         const targetDirectory = path.resolve('.', `./${dir}`);
         // fs.stat(targetDirectory, function (err, stats) {
         //     console.log('stats', stats);
