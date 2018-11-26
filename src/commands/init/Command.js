@@ -10,8 +10,8 @@ export default class Command {
     process(project) {
         console.log(colors.yellow(`Start to create project: ${project.projectName}`));
         this.generateDir(project.projectName, '/app')
-            .then(() => this.generateDir(`${project.projectName}/tool`, `/tool/${project.tool}`, project.tool))
-            .then(() => this.generateDir(`${project.projectName}/common`, 'common', project.common))
+            .then(() => project.tool && this.generateDir(`${project.projectName}/tool`, `/tool/${project.tool}`, project.tool))
+            .then(() => project.common && this.generateDir(`${project.projectName}/common`, 'common', project.common))
             .then(() => this.installPackage(project.projectName))
             .catch(error => {
                 console.error(colors.red(error.message));
@@ -19,24 +19,11 @@ export default class Command {
             });
     }
 
-    gotoDir(path) {
-        return new Promise((resolve, reject) => {
-            const child = exec(`cd ${path}`,
-                (error, stdout, stderr) => {
-                    if (error != null) {
-                        reject(error);
-                    }
-                    resolve();
-                }
-            );
-        });
-    }
-
     /**
      * 创建文件夹及文件
      */
     generateDir(dirName, subDir, values = 'true') {
-        if (values == '不需要' || (values.constructor == Array && values[0] == '不需要')) {
+        if (dirName == undefined) {
             return Promise.resolve();
         }
         console.log('Create folder %s', dirName);
@@ -74,7 +61,6 @@ export default class Command {
                         vfs.src('**/*', {cwd: GENERATOR_PATH_PREFIX + subDir, dot: true})
                             .pipe(vfs.dest(sourceDir))
                             .on('end', () => {
-                                console.log(99999);
                                 resolve();
                             })
                             .on('error', err => {
@@ -133,10 +119,10 @@ export default class Command {
      */
     installPackage(dir) {
         const targetDirectory = path.resolve('.', `./${dir}`);
-        fs.stat(targetDirectory, function (err, stats) {
-            console.log('stats', stats);
-        });
-        console.log(colors.yellow('Installing begin: sudo npm install -d'));
+        // fs.stat(targetDirectory, function (err, stats) {
+        //     console.log('stats', stats);
+        // });
+        console.log(colors.yellow('Installing begin: sudo npm install -d. Please patiently hold on until completion info!'));
         return new Promise((resolve, reject) => {
             const child = spawn(process.platform === "win32" ? "npm.cmd" : "npm", ['install'], {
                 cwd: targetDirectory,
