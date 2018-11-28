@@ -1,6 +1,6 @@
 {
   "name": "hly-cli",
-  "version": "1.0.6",
+  "version": "1.0.0",
   "description": "",
   "main": "bin/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "start": "babel-node ./src/index.js",
     "build": "babel src --out-dir bin --ignore test.js",
     "deploy-local": "cp -Rv ./* $(which hly-cli)/../../ ",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "bin": {
     "hly-cli": "bin/index.js"

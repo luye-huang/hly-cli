@@ -59,8 +59,6 @@ export default class Command {
                             reject(error);
                         }
                         let sourceDir = path.resolve('.', `./${dirName}`);
-                        console.log(sourceDir);
-                        console.log(GENERATOR_PATH_PREFIX + subDir);
                         vfs.src('**/*', {cwd: GENERATOR_PATH_PREFIX + subDir, dot: true})
                             .pipe(vfs.dest(sourceDir))
                             .on('end', () => {
