@@ -1,0 +1,15 @@
+{
+  "comments": false,
+  "presets": [
+    [
+      "env",
+      {
+        "useBuiltIns": true,
+        "forceAllTransforms": true
+      }
+    ]
+  ],
+  "plugins": [
+    "syntax-dynamic-import"
+  ]
+}
